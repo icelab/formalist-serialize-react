@@ -6,7 +6,7 @@ A React serializer for a Formalist-compatible abstract syntax tree. It’ll take
 
 ```js
 import composeForm from 'formalist-compose'
-import serializer from 'formalist-serialize-react'
+import serialize from 'formalist-serialize-react'
 
 const data = [...] // Formalist compatible AST
 
