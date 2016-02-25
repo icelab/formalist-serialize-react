@@ -10,10 +10,21 @@ import serialize from 'formalist-serialize-react'
 
 const data = [...] // Formalist compatible AST
 
-const serializedTemplate = composeForm(serialize)
+const serializedTemplate = composeForm(serialize())
 const serializedForm = serializedTemplate(data)
 
 // serializedForm.render()
+```
+
+You can set a prefix for the input names:
+
+```
+let options = {
+  prefix: "user"
+}
+const serializedTemplate = composeForm(serialize(options))
+
+// <input name="user[foo]" type="hidden"/>
 ```
 
 ## Development
