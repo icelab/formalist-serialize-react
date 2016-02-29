@@ -108,11 +108,7 @@ function input (props) {
 
   // Join our path into an HTML array foo[bar][baz]
   var serializedName = path.map(function (s, i) {
-    if (i === 0) {
-      return s
-    } else {
-      return '[' + s + ']'
-    }
+    return i === 0 ? s : '[' + s + ']'
   }).join('')
 
   return React.createElement(
