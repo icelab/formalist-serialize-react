@@ -1,7 +1,6 @@
 import React from 'react'
 import Immutable from 'immutable'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import extend from 'lodash/extend'
 
 /**
  * passThrough
@@ -169,7 +168,7 @@ input.propTypes = {
 
 function wrapComponent (component, additionalProps) {
   return componentProps => {
-    const props = extend({}, componentProps, additionalProps)
+    const props = Object.assign({}, componentProps, additionalProps)
     return React.createElement(
       component,
       props
