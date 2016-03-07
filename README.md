@@ -18,7 +18,7 @@ const serializedForm = serializedTemplate(data)
 
 You can set a prefix for the input names:
 
-```
+```js
 let options = {
   prefix: "user"
 }
@@ -27,17 +27,8 @@ const serializedTemplate = composeForm(serialize(options))
 // <input name="user[foo]" type="hidden"/>
 ```
 
-## Development
-
-### Installation
-
-```
-npm install
-npm install react react-dom react-addons-test-utils
-```
-
 ## Tests
 
 ```
-npm run test
+$ npm run test
 ```
