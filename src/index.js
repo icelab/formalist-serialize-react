@@ -1,7 +1,7 @@
-var React = require('react')
-var Immutable = require('immutable')
-var ImmutablePropTypes = require('react-immutable-proptypes')
-var extend = require('lodash/extend')
+import React from 'react'
+import Immutable from 'immutable'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import extend from 'lodash/extend'
 
 /**
  * passThrough
@@ -12,8 +12,47 @@ var extend = require('lodash/extend')
  * @param  {Object} props Props matching a node in a formalist AST
  * @return {Array} Array-ish of children
  */
+
 function passThrough (props) {
   return props.children
+}
+
+/**
+ * assemblePath
+ *
+ * A helper function to assemble the current path from `props`
+ *
+ * @param  {Object} props
+ * @return {Array} [path]
+ */
+
+function assemblePath (props = {}) {
+  let { serializedPath } = props
+  let { serializedIndex } = props
+  let { name } = props
+  let path = serializedPath ? serializedPath : []
+  path = path.slice(0)
+
+  if (serializedIndex != null) {
+    path.push(serializedIndex)
+  }
+
+  path.push(name)
+  return path
+}
+
+// Join our path into an HTML array foo[bar][baz]
+/**
+ * serializeName
+ * Join our path and return a string
+ * @param  {Array} path : [["foo"], ["bar"], ["baz"]]
+ * @return {String} name : "foo[bar][baz]"
+ */
+
+function serializeName (path) {
+  return path.map((s, i) => {
+    return i === 0 ? s : '[' + s + ']'
+  }).join('')
 }
 
 /**
@@ -25,15 +64,13 @@ function passThrough (props) {
  * @param  {Object} props Props matching a node in a formalist AST
  * @return {Array} Array-ish of children
  */
+
 function attr (props) {
-  // Assemble the current path
-  var path = props.serializedPath || []
-  path = path.slice(0)
-  path.push(props.name)
+  const path = assemblePath(props)
   return React.createElement(
     'div',
     null,
-    React.Children.map(props.children, function (child) {
+    React.Children.map(props.children, child => {
       return React.cloneElement(child, {
         serializedPath: path
       })
@@ -56,21 +93,19 @@ attr.propTypes = {
  * @param  {Object} props Props matching a node in a formalist AST
  * @return {Array} Array-ish of children
  */
+
 function many (props) {
-  // Assemble the current path
-  var path = props.serializedPath || []
-  var sets = props.children
-  path = path.slice(0)
-  path.push(props.name)
+  const path = assemblePath(props)
+  const { children } = props
   return React.createElement(
     'div',
     null,
-    sets.map(function renderSet (children, setIndex) {
+    children.map(function renderSet (children, setIndex) {
       if (Immutable.List.isList(children)) {
         return children.map(function renderChild (child, index) {
           return React.cloneElement(child, {
             serializedPath: path,
-            serializedIndex: setIndex
+            serializedIndex: index
           })
         })
       } else {
@@ -97,26 +132,18 @@ many.propTypes = {
  *
  * @return {ReactComponent}
  */
-function input (props) {
-  // Assemble the current path
-  var path = props.serializedPath || []
-  path = path.slice(0)
-  if (props.serializedIndex !== undefined && props.serializedIndex !== null) {
-    path.push(props.serializedIndex)
-  }
-  path.push(props.name)
 
-  // Join our path into an HTML array foo[bar][baz]
-  var serializedName = path.map(function (s, i) {
-    return i === 0 ? s : '[' + s + ']'
-  }).join('')
+function input (props) {
+  const path = assemblePath(props)
+  const { value } = props
+  const serializedName = serializeName(path)
 
   return React.createElement(
     'input',
     {
       'type': 'hidden',
       'name': serializedName,
-      'value': props.value
+      'value': value
     }
   )
 }
@@ -139,9 +166,10 @@ input.propTypes = {
  * @param  {Object} additionalProps
  * @return {Function}
  */
+
 function wrapComponent (component, additionalProps) {
-  return function (componentProps) {
-    var props = extend({}, componentProps, additionalProps)
+  return componentProps => {
+    const props = extend({}, componentProps, additionalProps)
     return React.createElement(
       component,
       props
@@ -154,12 +182,13 @@ function wrapComponent (component, additionalProps) {
  * @param  {Object} options Options hash: { prefix: String }
  * @return {Object} A object referencing the various React components above
  */
-module.exports = function serialize (options) {
-  options = options || {}
-  var additionalProps = {
-    serializedPath: (options.prefix) ? [options.prefix] : []
+
+export default function serialize (options = {}) {
+  const { prefix } = options
+  const additionalProps = {
+    serializedPath: prefix ? [prefix] : []
   }
-  var components = {
+  return {
     fields: {
       bool: wrapComponent(input, additionalProps),
       int: wrapComponent(input, additionalProps),
@@ -174,5 +203,4 @@ module.exports = function serialize (options) {
     group: passThrough,
     section: passThrough
   }
-  return components
 }
