@@ -205,9 +205,11 @@ export default function serialize (options = {}) {
   }
 
   // Allow for serialization of any custom field types
-  additionalFieldTypes.forEach((type) => {
-    definition.fields[type] = wrapComponent(input, additionalProps)
-  })
+  if (additionalFieldTypes) {
+    additionalFieldTypes.forEach((type) => {
+      definition.fields[type] = wrapComponent(input, additionalProps)
+    })
+  }
 
   return definition
 }
