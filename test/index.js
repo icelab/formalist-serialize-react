@@ -1,23 +1,16 @@
-var enzyme = require('enzyme')
-var formalistCompose = require('formalist-compose')
-var jsdom = require('jsdom')
-var test = require('tape')
-var React = require('react')
-var serializer = require('..')
+import { mount } from 'enzyme'
+import composeForm from 'formalist-compose'
+import test from 'tape'
+import React from 'react'
+import serializer from '..'
+
+import createDOM from './fixtures/dom'
+createDOM()
 
 // Import various data
-var dataSimple = require('./fixtures/data.js')
-var dataAttr = require('./fixtures/data-attr.js')
-var dataMany = require('./fixtures/data-many.js')
-
-var composeForm = formalistCompose.default
-var mount = enzyme.mount
-
-// A super simple DOM ready for React to render into
-// Store this DOM and the window in global scope ready for React to access
-global.document = jsdom.jsdom('<!doctype html><html><body></body></html>')
-global.window = document.defaultView
-global.navigator = {userAgent: 'node.js'}
+import dataSimple from './fixtures/data.js'
+import dataAttr from './fixtures/data-attr.js'
+import dataMany from './fixtures/data-many.js'
 
 /**
  * Create a wrapper
@@ -25,9 +18,10 @@ global.navigator = {userAgent: 'node.js'}
  * @param  {Object} options Hash of options { prefix: ... }
  * @return {EnzymeDOM} Enzyme wrapper for the DOM
  */
+
 function createWrapper (data, options) {
-  var serializedTemplate = composeForm(serializer(options))
-  var serializedForm = serializedTemplate(data)
+  const serializedTemplate = composeForm(serializer(options))
+  const serializedForm = serializedTemplate(data)
   return mount(React.createElement(
     'article',
     {},
@@ -35,38 +29,35 @@ function createWrapper (data, options) {
   ))
 }
 
-function assertInputNames (assert, wrapper, expectedNames) {
-  var inputs = wrapper.find('input')
-  var names = inputs.map(function (input) {
+function assertInputNames (assert, wrapper, expected) {
+  const inputs = wrapper.find('input')
+  const actual = inputs.map(function (input) {
     return input.node.getAttribute('name')
   })
-  assert.deepLooseEqual(names, expectedNames)
+  assert.deepLooseEqual(actual, expected)
 }
 
-function assertInputValues (assert, wrapper, expectedValues) {
-  var inputs = wrapper.find('input')
-  var values = inputs.map(function (input) {
+function assertInputValues (assert, wrapper, expected) {
+  const inputs = wrapper.find('input')
+  const actual = inputs.map(function (input) {
     return input.node.value
   })
-  assert.deepLooseEqual(values, expectedValues)
+  assert.deepLooseEqual(actual, expected)
 }
 
-/**
- * Begin the tests!
- */
-test('it should serialize a formalist AST', function (nest) {
-  var options = {}
+test('it should serialize a formalist AST', (nest) => {
+  let options = {}
 
-  nest.test('... with the right number of fields', function (assert) {
-    var wrapper = createWrapper(dataSimple, options)
-    var inputs = wrapper.find('input')
+  nest.test('... with the right number of fields', (assert) => {
+    const wrapper = createWrapper(dataSimple, options)
+    const inputs = wrapper.find('input')
     assert.equal(inputs.length, 4)
     assert.end()
   })
 
-  nest.test('... with the correct name attributes', function (assert) {
-    var wrapper = createWrapper(dataSimple, options)
-    var expectedNames = [
+  nest.test('... with the correct name attributes', (assert) => {
+    const wrapper = createWrapper(dataSimple, options)
+    const expectedNames = [
       'field-one-name',
       'field-two-name',
       'field-three-name',
@@ -76,9 +67,9 @@ test('it should serialize a formalist AST', function (nest) {
     assert.end()
   })
 
-  nest.test('... with the correct values', function (assert) {
-    var wrapper = createWrapper(dataSimple, options)
-    var expectedValues = [
+  nest.test('... with the correct values', (assert) => {
+    const wrapper = createWrapper(dataSimple, options)
+    const expectedValues = [
       123,
       'Title goes here',
       321,
@@ -88,17 +79,16 @@ test('it should serialize a formalist AST', function (nest) {
     assert.end()
   })
 
-  nest.test('... for fields nested in `attr` blocks', function (assert) {
-    assert.plan(2)
-    var wrapper = createWrapper(dataAttr, options)
+  nest.test('... for fields nested in `attr` blocks', (assert) => {
+    const wrapper = createWrapper(dataAttr, options)
     // Names
-    var expectedNames = [
+    const expectedNames = [
       'attr[field-one-attr]',
       'attr[field-two-attr]'
     ]
     assertInputNames(assert, wrapper, expectedNames)
     // Values
-    var expectedValues = [
+    const expectedValues = [
       'Attr 1',
       456
     ]
@@ -106,17 +96,16 @@ test('it should serialize a formalist AST', function (nest) {
     assert.end()
   })
 
-  nest.test('... for fields nested in `many` blocks', function (assert) {
-    assert.plan(2)
-    var wrapper = createWrapper(dataMany, options)
+  nest.test('... for fields nested in `many` blocks', (assert) => {
+    const wrapper = createWrapper(dataMany, options)
     // Names
-    var expectedNames = [
+    const expectedNames = [
       'many[0][field-one-many]',
       'many[1][field-one-many]'
     ]
     assertInputNames(assert, wrapper, expectedNames)
     // Values
-    var expectedValues = [
+    const expectedValues = [
       'Great',
       'Foobar'
     ]
@@ -125,14 +114,14 @@ test('it should serialize a formalist AST', function (nest) {
   })
 })
 
-test('it should handle namespacing prefixes', function (nest) {
-  var options = {
+test('it should handle namespacing prefixes', (nest) => {
+  const options = {
     prefix: 'user'
   }
 
-  nest.test('... for normal inputs', function (assert) {
-    var wrapper = createWrapper(dataSimple, options)
-    var expectedNames = [
+  nest.test('... for normal inputs', (assert) => {
+    const wrapper = createWrapper(dataSimple, options)
+    const expectedNames = [
       'user[field-one-name]',
       'user[field-two-name]',
       'user[field-three-name]',
@@ -142,9 +131,9 @@ test('it should handle namespacing prefixes', function (nest) {
     assert.end()
   })
 
-  nest.test('... for fields nested in `attr` blocks', function (assert) {
-    var wrapper = createWrapper(dataAttr, options)
-    var expectedNames = [
+  nest.test('... for fields nested in `attr` blocks', (assert) => {
+    const wrapper = createWrapper(dataAttr, options)
+    const expectedNames = [
       'user[attr][field-one-attr]',
       'user[attr][field-two-attr]'
     ]
@@ -152,9 +141,9 @@ test('it should handle namespacing prefixes', function (nest) {
     assert.end()
   })
 
-  nest.test('... for fields nested in `many` blocks', function (assert) {
-    var wrapper = createWrapper(dataMany, options)
-    var expectedNames = [
+  nest.test('... for fields nested in `many` blocks', (assert) => {
+    const wrapper = createWrapper(dataMany, options)
+    const expectedNames = [
       'user[many][0][field-one-many]',
       'user[many][1][field-one-many]'
     ]
