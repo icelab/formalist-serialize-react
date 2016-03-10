@@ -104,7 +104,7 @@ function many (props) {
         return children.map(function renderChild (child, index) {
           return React.cloneElement(child, {
             serializedPath: path,
-            serializedIndex: index
+            serializedIndex: setIndex
           })
         })
       } else {
