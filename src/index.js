@@ -200,6 +200,7 @@ export default function serialize (options = {}) {
     },
     attr: wrapComponent(attr, additionalProps),
     many: wrapComponent(many, additionalProps),
+    compoundField: passThrough,
     group: passThrough,
     section: passThrough
   }
