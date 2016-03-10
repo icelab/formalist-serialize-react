@@ -51,17 +51,33 @@ test('it should serialize a formalist AST', (nest) => {
   nest.test('... with the right number of fields', (assert) => {
     const wrapper = createWrapper(dataSimple, options)
     const inputs = wrapper.find('input')
-    assert.equal(inputs.length, 4)
+    assert.equal(inputs.length, 20)
     assert.end()
   })
 
   nest.test('... with the correct name attributes', (assert) => {
     const wrapper = createWrapper(dataSimple, options)
     const expectedNames = [
-      'field-one-name',
-      'field-two-name',
-      'field-three-name',
-      'field-four-name'
+      'text_field',
+      'number_field',
+      'check_box',
+      'select_box',
+      'radio_buttons',
+      'text_area',
+      'date_field',
+      'date_time_field',
+      'section_text_field',
+      'section_number_field',
+      'group_text_field',
+      'group_number_field',
+      'many[0][many_text_field]',
+      'many[0][many_date_field]',
+      'many[1][many_text_field]',
+      'many[1][many_date_field]',
+      'attr[attr_text_field]',
+      'attr[attr_date_field]',
+      'compound_field_text_field',
+      'compound_field_date_field'
     ]
     assertInputNames(assert, wrapper, expectedNames)
     assert.end()
@@ -70,10 +86,26 @@ test('it should serialize a formalist AST', (nest) => {
   nest.test('... with the correct values', (assert) => {
     const wrapper = createWrapper(dataSimple, options)
     const expectedValues = [
-      123,
-      'Title goes here',
-      321,
-      'Content goes here'
+      'Text field value',
+      'Number field value',
+      'Check box value',
+      '3',
+      '2',
+      'Text area value',
+      '2016-03-10',
+      '2016-03-10 17:00:00 +1100',
+      'Section text field value',
+      '123',
+      'Group text field value',
+      '123',
+      'Many text field 1',
+      '2016-03-10',
+      'Many text field 2',
+      '2016-03-09',
+      'Attr text field value',
+      '2016-03-10',
+      'Compound text field value',
+      '2016-03-10'
     ]
     assertInputValues(assert, wrapper, expectedValues)
     assert.end()
@@ -83,14 +115,14 @@ test('it should serialize a formalist AST', (nest) => {
     const wrapper = createWrapper(dataAttr, options)
     // Names
     const expectedNames = [
-      'attr[field-one-attr]',
-      'attr[field-two-attr]'
+      'attr[attr_text_field]',
+      'attr[attr_date_field]'
     ]
     assertInputNames(assert, wrapper, expectedNames)
     // Values
     const expectedValues = [
-      'Attr 1',
-      456
+      'Attr text field value',
+      '2016-03-10'
     ]
     assertInputValues(assert, wrapper, expectedValues)
     assert.end()
@@ -100,14 +132,18 @@ test('it should serialize a formalist AST', (nest) => {
     const wrapper = createWrapper(dataMany, options)
     // Names
     const expectedNames = [
-      'many[0][field-one-many]',
-      'many[1][field-one-many]'
+      'many[0][many_text_field]',
+      'many[0][many_date_field]',
+      'many[1][many_text_field]',
+      'many[1][many_date_field]'
     ]
     assertInputNames(assert, wrapper, expectedNames)
     // Values
     const expectedValues = [
-      'Great',
-      'Foobar'
+      'Many text field 1',
+      '2016-03-10',
+      'Many text field 2',
+      '2016-03-09'
     ]
     assertInputValues(assert, wrapper, expectedValues)
     assert.end()
@@ -122,10 +158,26 @@ test('it should handle namespacing prefixes', (nest) => {
   nest.test('... for normal inputs', (assert) => {
     const wrapper = createWrapper(dataSimple, options)
     const expectedNames = [
-      'user[field-one-name]',
-      'user[field-two-name]',
-      'user[field-three-name]',
-      'user[field-four-name]'
+      'user[text_field]',
+      'user[number_field]',
+      'user[check_box]',
+      'user[select_box]',
+      'user[radio_buttons]',
+      'user[text_area]',
+      'user[date_field]',
+      'user[date_time_field]',
+      'user[section_text_field]',
+      'user[section_number_field]',
+      'user[group_text_field]',
+      'user[group_number_field]',
+      'user[many][0][many_text_field]',
+      'user[many][0][many_date_field]',
+      'user[many][1][many_text_field]',
+      'user[many][1][many_date_field]',
+      'user[attr][attr_text_field]',
+      'user[attr][attr_date_field]',
+      'user[compound_field_text_field]',
+      'user[compound_field_date_field]'
     ]
     assertInputNames(assert, wrapper, expectedNames)
     assert.end()
@@ -134,8 +186,8 @@ test('it should handle namespacing prefixes', (nest) => {
   nest.test('... for fields nested in `attr` blocks', (assert) => {
     const wrapper = createWrapper(dataAttr, options)
     const expectedNames = [
-      'user[attr][field-one-attr]',
-      'user[attr][field-two-attr]'
+      'user[attr][attr_text_field]',
+      'user[attr][attr_date_field]'
     ]
     assertInputNames(assert, wrapper, expectedNames)
     assert.end()
@@ -144,8 +196,10 @@ test('it should handle namespacing prefixes', (nest) => {
   nest.test('... for fields nested in `many` blocks', (assert) => {
     const wrapper = createWrapper(dataMany, options)
     const expectedNames = [
-      'user[many][0][field-one-many]',
-      'user[many][1][field-one-many]'
+      'user[many][0][many_text_field]',
+      'user[many][0][many_date_field]',
+      'user[many][1][many_text_field]',
+      'user[many][1][many_date_field]'
     ]
     assertInputNames(assert, wrapper, expectedNames)
     assert.end()

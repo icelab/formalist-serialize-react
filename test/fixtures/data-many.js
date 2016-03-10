@@ -1,40 +1,104 @@
+/**
+ * Generated from the reference form noted in data.js
+ */
+
 /*eslint-disable */
 module.exports = [
   [
     "many",
     [
       "many",
+      "many",
       [],
       [],
       [
+        "object",
         [
-          "allow_create",
-          true
-        ],
-        [
-          "allow_update",
-          true
-        ],
-        [
-          "allow_destroy",
-          true
-        ],
-        [
-          "allow_reorder",
-          true
+          [
+            "allow_create",
+            [
+              "value",
+              [
+                true
+              ]
+            ]
+          ],
+          [
+            "allow_update",
+            [
+              "value",
+              [
+                true
+              ]
+            ]
+          ],
+          [
+            "allow_destroy",
+            [
+              "value",
+              [
+                true
+              ]
+            ]
+          ],
+          [
+            "allow_reorder",
+            [
+              "value",
+              [
+                true
+              ]
+            ]
+          ]
         ]
       ],
       [
         [
           "field",
           [
-            "field-one-many",
-            "string",
-            "default",
+            "many_text_field",
+            "text_field",
             null,
             [],
             [],
-            []
+            [
+              "object",
+              [
+                [
+                  "label",
+                  [
+                    "value",
+                    [
+                      "Many text field"
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          "field",
+          [
+            "many_date_field",
+            "date_field",
+            null,
+            [],
+            [],
+            [
+              "object",
+              [
+                [
+                  "label",
+                  [
+                    "value",
+                    [
+                      "Many date field"
+                    ]
+                  ]
+                ]
+              ]
+            ]
           ]
         ]
       ],
@@ -43,25 +107,99 @@ module.exports = [
           [
             "field",
             [
-              "field-one-many",
-              "string",
-              "default",
-              "Great",
+              "many_text_field",
+              "text_field",
+              "Many text field 1",
               [],
               [],
-              []
+              [
+                "object",
+                [
+                  [
+                    "label",
+                    [
+                      "value",
+                      [
+                        "Many text field"
+                      ]
+                    ]
+                  ]
+                ]
+              ]
             ]
           ],
           [
             "field",
             [
-              "field-one-many",
-              "string",
-              "default",
-              "Foobar",
+              "many_date_field",
+              "date_field",
+              "2016-03-10",
               [],
               [],
-              []
+              [
+                "object",
+                [
+                  [
+                    "label",
+                    [
+                      "value",
+                      [
+                        "Many date field"
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          [
+            "field",
+            [
+              "many_text_field",
+              "text_field",
+              "Many text field 2",
+              [],
+              [],
+              [
+                "object",
+                [
+                  [
+                    "label",
+                    [
+                      "value",
+                      [
+                        "Many text field"
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          [
+            "field",
+            [
+              "many_date_field",
+              "date_field",
+              "2016-03-09",
+              [],
+              [],
+              [
+                "object",
+                [
+                  [
+                    "label",
+                    [
+                      "value",
+                      [
+                        "Many date field"
+                      ]
+                    ]
+                  ]
+                ]
+              ]
             ]
           ]
         ]
