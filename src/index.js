@@ -104,7 +104,7 @@ function many (props) {
         return children.map(function renderChild (child, index) {
           return React.cloneElement(child, {
             serializedPath: path,
-            serializedIndex: index
+            serializedIndex: setIndex
           })
         })
       } else {
@@ -178,28 +178,39 @@ function wrapComponent (component, additionalProps) {
 
 /**
  * Map input/wrappers to the various formalist-schema
- * @param  {Object} options Options hash: { prefix: String }
+ * @param  {Object} options Options hash: { prefix: String, additionalFieldTypes: [] }
  * @return {Object} A object referencing the various React components above
  */
 
 export default function serialize (options = {}) {
-  const { prefix } = options
+  const { prefix, additionalFieldTypes } = options
   const additionalProps = {
     serializedPath: prefix ? [prefix] : []
   }
-  return {
+  const definition = {
     fields: {
-      bool: wrapComponent(input, additionalProps),
-      int: wrapComponent(input, additionalProps),
-      date: wrapComponent(input, additionalProps),
-      date_time: wrapComponent(input, additionalProps),
-      decimal: wrapComponent(input, additionalProps),
-      float: wrapComponent(input, additionalProps),
-      string: wrapComponent(input, additionalProps)
+      check_box: wrapComponent(input, additionalProps),
+      date_field: wrapComponent(input, additionalProps),
+      date_time_field: wrapComponent(input, additionalProps),
+      number_field: wrapComponent(input, additionalProps),
+      radio_buttons: wrapComponent(input, additionalProps),
+      select_box: wrapComponent(input, additionalProps),
+      text_area: wrapComponent(input, additionalProps),
+      text_field: wrapComponent(input, additionalProps)
     },
     attr: wrapComponent(attr, additionalProps),
     many: wrapComponent(many, additionalProps),
+    compoundField: passThrough,
     group: passThrough,
     section: passThrough
   }
+
+  // Allow for serialization of any custom field types
+  if (additionalFieldTypes) {
+    additionalFieldTypes.forEach((type) => {
+      definition.fields[type] = wrapComponent(input, additionalProps)
+    })
+  }
+
+  return definition
 }

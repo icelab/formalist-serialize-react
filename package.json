@@ -38,7 +38,6 @@
     "eslint-plugin-standard": "^1.3.2",
     "faucet": "0.0.1",
     "jsdom": "8.1.0",
-    "react": "^0.14.7",
     "react-addons-test-utils": "^0.14.7",
     "tape": "4.5.1",
     "wr": "^1.3.1"
@@ -47,8 +46,11 @@
     "formalist-compose": "icelab/formalist-compose",
     "immutable": "3.7.6",
     "react-addons-clone-with-props": "0.14.7",
-    "react-dom": "^0.14.7",
     "react-immutable-proptypes": "1.7.0"
+  },
+  "peerDependencies": {
+    "react-dom": "^0.14.7",
+    "react": "^0.14.7"
   },
   "engines": {
     "node": ">=5.2.0"
