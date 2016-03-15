@@ -10,7 +10,6 @@ module.exports = [
       "attr",
       "attr",
       [],
-      [],
       [
         "object",
         []
@@ -22,7 +21,6 @@ module.exports = [
             "attr_text_field",
             "text_field",
             "Attr text field value",
-            [],
             [],
             [
               "object",
@@ -46,7 +44,6 @@ module.exports = [
             "attr_date_field",
             "date_field",
             "2016-03-10",
-            [],
             [],
             [
               "object",

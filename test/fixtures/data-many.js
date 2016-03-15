@@ -10,7 +10,6 @@ module.exports = [
       "many",
       "many",
       [],
-      [],
       [
         "object",
         [
@@ -60,7 +59,6 @@ module.exports = [
             "text_field",
             null,
             [],
-            [],
             [
               "object",
               [
@@ -83,7 +81,6 @@ module.exports = [
             "many_date_field",
             "date_field",
             null,
-            [],
             [],
             [
               "object",
@@ -111,7 +108,6 @@ module.exports = [
               "text_field",
               "Many text field 1",
               [],
-              [],
               [
                 "object",
                 [
@@ -134,7 +130,6 @@ module.exports = [
               "many_date_field",
               "date_field",
               "2016-03-10",
-              [],
               [],
               [
                 "object",
@@ -161,7 +156,6 @@ module.exports = [
               "text_field",
               "Many text field 2",
               [],
-              [],
               [
                 "object",
                 [
@@ -184,7 +178,6 @@ module.exports = [
               "many_date_field",
               "date_field",
               "2016-03-09",
-              [],
               [],
               [
                 "object",
