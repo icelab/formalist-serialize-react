@@ -24,7 +24,7 @@
     "test": "babel-node --presets babel-preset-es2015 test | faucet",
     "lint": "eslint index.js test/*.js test/**/*.js",
     "posttest": "npm run lint",
-    "watch": "./node_modules/.bin/wr 'npm run build' ./src"
+    "watch": "wr 'npm run build' ./src"
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",
