@@ -55,18 +55,6 @@ function serializeName (path) {
 }
 
 /**
- * Turn a given value into a sring value
- * @param  {Mixed} value Value to be stringified
- * @return {String}       [description]
- */
-function stringifyValue (value) {
-  if (List.isList(value)) {
-    return value.toJS()
-  }
-  return value
-}
-
-/**
  * Attr
  *
  * A stateless React wrapper for components that simply returns
@@ -136,6 +124,33 @@ many.propTypes = {
 }
 
 /**
+ * List
+ *
+ * @return {ReactComponent}
+ */
+
+function list (props) {
+  const path = assemblePath(props)
+  const { value } = props
+  return React.createElement(
+    'div',
+    null,
+    (value) ? value.map(function renderValue (value, index) {
+      return input({
+        value,
+        serializedPath: path,
+        serializedIndex: index
+      })
+    }) : null
+  )
+}
+
+list.propTypes = {
+  name: React.PropTypes.string.isRequired,
+  value: React.PropTypes.any,
+  serializedPath: React.PropTypes.array
+}
+/**
  * Input
  *
  * Stateless React component that creates a hidden input for a given
@@ -153,7 +168,7 @@ function input (props) {
     {
       'type': 'hidden',
       'name': serializedName,
-      'value': stringifyValue(value)
+      'value': value
     }
   )
 }
@@ -199,7 +214,7 @@ export default function serialize (options = {}) {
       checkBox: wrapComponent(input, additionalProps),
       dateField: wrapComponent(input, additionalProps),
       dateTimeField: wrapComponent(input, additionalProps),
-      multiSelectionField: wrapComponent(input, additionalProps),
+      multiSelectionField: wrapComponent(list, additionalProps),
       numberField: wrapComponent(input, additionalProps),
       radioButtons: wrapComponent(input, additionalProps),
       selectBox: wrapComponent(input, additionalProps),
