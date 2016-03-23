@@ -1,5 +1,5 @@
 import React from 'react'
-import Immutable from 'immutable'
+import { List } from 'immutable'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 /**
@@ -55,6 +55,18 @@ function serializeName (path) {
 }
 
 /**
+ * Turn a given value into a sring value
+ * @param  {Mixed} value Value to be stringified
+ * @return {String}       [description]
+ */
+function stringifyValue (value) {
+  if (List.isList(value)) {
+    return value.toJS()
+  }
+  return value
+}
+
+/**
  * Attr
  *
  * A stateless React wrapper for components that simply returns
@@ -100,7 +112,7 @@ function many (props) {
     'div',
     null,
     children.map(function renderSet (children, setIndex) {
-      if (Immutable.List.isList(children)) {
+      if (List.isList(children)) {
         return children.map(function renderChild (child, index) {
           return React.cloneElement(child, {
             serializedPath: path,
@@ -136,24 +148,19 @@ function input (props) {
   const path = assemblePath(props)
   const { value } = props
   const serializedName = serializeName(path)
-
   return React.createElement(
     'input',
     {
       'type': 'hidden',
       'name': serializedName,
-      'value': value
+      'value': stringifyValue(value)
     }
   )
 }
 
 input.propTypes = {
   name: React.PropTypes.string.isRequired,
-  value: React.PropTypes.oneOfType([
-    React.PropTypes.bool,
-    React.PropTypes.number,
-    React.PropTypes.string
-  ]),
+  value: React.PropTypes.any,
   serializedPath: React.PropTypes.array,
   serializedIndex: React.PropTypes.number
 }
