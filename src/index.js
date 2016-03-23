@@ -36,7 +36,10 @@ function assemblePath (props = {}) {
     path.push(serializedIndex)
   }
 
-  path.push(name)
+  if (name != null) {
+    path.push(name)
+  }
+
   return path
 }
 
