@@ -139,7 +139,8 @@ function list (props) {
     'div',
     null,
     (value) ? value.map(function renderValue (value, index) {
-      return input({
+      return React.createElement(input, {
+        key: `${path}-${index}`,
         value,
         serializedPath: path,
         serializedIndex: index
@@ -177,7 +178,6 @@ function input (props) {
 }
 
 input.propTypes = {
-  name: React.PropTypes.string.isRequired,
   value: React.PropTypes.any,
   serializedPath: React.PropTypes.array,
   serializedIndex: React.PropTypes.number
