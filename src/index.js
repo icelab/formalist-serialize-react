@@ -143,7 +143,7 @@ function list (props) {
         key: `${path}-${index}`,
         value,
         serializedPath: path,
-        serializedIndex: index
+        serializedIndex: ''
       })
     }) : null
   )
@@ -180,7 +180,10 @@ function input (props) {
 input.propTypes = {
   value: React.PropTypes.any,
   serializedPath: React.PropTypes.array,
-  serializedIndex: React.PropTypes.number
+  serializedIndex: React.PropTypes.oneOfType([
+    React.PropTypes.number,
+    React.PropTypes.string
+  ])
 }
 
 /**
