@@ -220,6 +220,7 @@ export default function serialize (options = {}) {
       checkBox: wrapComponent(input, additionalProps),
       dateField: wrapComponent(input, additionalProps),
       dateTimeField: wrapComponent(input, additionalProps),
+      hiddenField: wrapComponent(input, additionalProps),
       multiSelectionField: wrapComponent(list, additionalProps),
       numberField: wrapComponent(input, additionalProps),
       radioButtons: wrapComponent(input, additionalProps),
