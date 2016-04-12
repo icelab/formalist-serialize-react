@@ -102,7 +102,7 @@ function many (props) {
   return React.createElement(
     'div',
     null,
-    children.map(function renderSet (children, setIndex) {
+    (children.count() > 0) ? children.map(function renderSet (children, setIndex) {
       if (List.isList(children)) {
         return children.map(function renderChild (child, index) {
           return React.cloneElement(child, {
@@ -116,6 +116,9 @@ function many (props) {
           serializedIndex: setIndex
         })
       }
+    }) : React.createElement(input, {
+      value: '',
+      serializedPath: path
     })
   )
 }
@@ -145,7 +148,10 @@ function list (props) {
         serializedPath: path,
         serializedIndex: ''
       })
-    }) : null
+    }) : React.createElement(input, {
+      value: '',
+      serializedPath: path
+    })
   )
 }
 
