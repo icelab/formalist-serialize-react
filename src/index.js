@@ -102,7 +102,7 @@ function many (props) {
   return React.createElement(
     'div',
     null,
-    (children.count() > 0) ? children.map(function renderSet (children, setIndex) {
+    (List.isList(children) && children.count() > 0) ? children.map(function renderSet (children, setIndex) {
       if (List.isList(children)) {
         return children.map(function renderChild (child, index) {
           return React.cloneElement(child, {
@@ -138,10 +138,11 @@ many.propTypes = {
 function list (props) {
   const path = assemblePath(props)
   const { value } = props
+
   return React.createElement(
     'div',
     null,
-    (value) ? value.map(function renderValue (value, index) {
+    (List.isList(value) && value.count() > 0) ? value.map(function renderValue (value, index) {
       return React.createElement(input, {
         key: `${path}-${index}`,
         value,
