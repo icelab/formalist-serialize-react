@@ -49,7 +49,7 @@
     "react-immutable-proptypes": "1.7.0"
   },
   "peerDependencies": {
-    "react-dom": "^0.14.8",
-    "react": "^0.14.8"
+    "react-dom": "^15.0.0",
+    "react": "^15.0.0"
   }
 }
