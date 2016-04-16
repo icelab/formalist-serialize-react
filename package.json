@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "formalist-compose": "icelab/formalist-compose",
-    "immutable": "3.7.6",
+    "immutable": "3.8.0",
     "react-addons-clone-with-props": "0.14.8",
     "react-immutable-proptypes": "1.7.0"
   },
