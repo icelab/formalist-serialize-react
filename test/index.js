@@ -2,7 +2,7 @@ import { mount } from 'enzyme'
 import composeForm from 'formalist-compose'
 import test from 'tape'
 import React from 'react'
-import serializer from '..'
+import serializer from '../src'
 
 import createDOM from './fixtures/dom'
 createDOM()
@@ -70,10 +70,10 @@ test('it should serialize a formalist AST', (nest) => {
       'section_number_field',
       'group_text_field',
       'group_number_field',
-      'many[0][many_text_field]',
-      'many[0][many_date_field]',
-      'many[1][many_text_field]',
-      'many[1][many_date_field]',
+      'many[][many_text_field]',
+      'many[][many_date_field]',
+      'many[][many_text_field]',
+      'many[][many_date_field]',
       'attr[attr_text_field]',
       'attr[attr_date_field]',
       'compound_field_text_field',
@@ -132,10 +132,10 @@ test('it should serialize a formalist AST', (nest) => {
     const wrapper = createWrapper(dataMany, options)
     // Names
     const expectedNames = [
-      'many[0][many_text_field]',
-      'many[0][many_date_field]',
-      'many[1][many_text_field]',
-      'many[1][many_date_field]'
+      'many[][many_text_field]',
+      'many[][many_date_field]',
+      'many[][many_text_field]',
+      'many[][many_date_field]'
     ]
     assertInputNames(assert, wrapper, expectedNames)
     // Values
@@ -170,10 +170,10 @@ test('it should handle namespacing prefixes', (nest) => {
       'user[section_number_field]',
       'user[group_text_field]',
       'user[group_number_field]',
-      'user[many][0][many_text_field]',
-      'user[many][0][many_date_field]',
-      'user[many][1][many_text_field]',
-      'user[many][1][many_date_field]',
+      'user[many][][many_text_field]',
+      'user[many][][many_date_field]',
+      'user[many][][many_text_field]',
+      'user[many][][many_date_field]',
       'user[attr][attr_text_field]',
       'user[attr][attr_date_field]',
       'user[compound_field_text_field]',
@@ -196,10 +196,10 @@ test('it should handle namespacing prefixes', (nest) => {
   nest.test('... for fields nested in `many` blocks', (assert) => {
     const wrapper = createWrapper(dataMany, options)
     const expectedNames = [
-      'user[many][0][many_text_field]',
-      'user[many][0][many_date_field]',
-      'user[many][1][many_text_field]',
-      'user[many][1][many_date_field]'
+      'user[many][][many_text_field]',
+      'user[many][][many_date_field]',
+      'user[many][][many_text_field]',
+      'user[many][][many_date_field]'
     ]
     assertInputNames(assert, wrapper, expectedNames)
     assert.end()
