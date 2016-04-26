@@ -233,13 +233,13 @@ function mapInput (props) {
     if (isObject(nestedValue)) {
       return mapInput({
         key: `${nestedPath}-${index}`,
-        value: Map(nestedValue),
+        value: Immutable.fromJS(nestedValue),
         serializedPath: nestedPath
       })
     } else if(Array.isArray(nestedValue)) {
       return list({
         key: `${nestedPath}-${index}`,
-        value: Map(nestedValue),
+        value: Immutable.fromJS(nestedValue),
         serializedPath: nestedPath
       })
     } else {
