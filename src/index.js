@@ -220,8 +220,8 @@ input.propTypes = {
  */
 function mapInput (props) {
   const path = assemblePath(props)
-  // Value is an `ImmutableMap`
-  const {value} = props
+  // Ensure value is an `ImmutableMap`
+  let {value} = props
 
   // Iterate over the keys in the Map
   return value.keySeq().map(function renderObjectKeys(key, index) {
@@ -233,13 +233,13 @@ function mapInput (props) {
     if (isObject(nestedValue)) {
       return mapInput({
         key: `${nestedPath}-${index}`,
-        value: Immutable.fromJS(nestedValue),
+        value: Map(nestedValue),
         serializedPath: nestedPath
       })
     } else if(Array.isArray(nestedValue)) {
       return list({
         key: `${nestedPath}-${index}`,
-        value: Immutable.fromJS(nestedValue),
+        value: List(nestedValue),
         serializedPath: nestedPath
       })
     } else {
