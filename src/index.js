@@ -202,7 +202,10 @@ list.propTypes = {
 
 function input (props) {
   const path = assemblePath(props)
-  const { value } = props
+  let { value } = props
+  if (value === null) {
+    value = ''
+  }
   const serializedName = serializeName(path)
   return React.createElement(
     'input',
@@ -237,7 +240,7 @@ function mapInput (props) {
   let {value} = props
 
   // Iterate over the keys in the Map
-  if (value) {
+  if (value != null) {
     return React.createElement(
       'div',
       {key: instanceKey},
@@ -269,7 +272,11 @@ function mapInput (props) {
       })
     )
   } else {
-    return null
+    return React.createElement(input, {
+      key: path,
+      value: value,
+      serializedPath: path
+    })
   }
 }
 
