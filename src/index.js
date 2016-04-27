@@ -1,5 +1,5 @@
 import React from 'react'
-import { List, Map } from 'immutable'
+import Immutable, { List, Map } from 'immutable'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 /**
@@ -10,6 +10,16 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 
 function isObject(obj) {
   return obj === Object(obj)
+}
+
+/**
+ * UUID
+ */
+function uid() {
+  const four = function() {
+    return (((1+Math.random())*0x10000)|0).toString(16).substring(1)
+  }
+  return (new Date().getTime() + '-' + four()+four()+four())
 }
 
 /**
@@ -219,38 +229,45 @@ input.propTypes = {
  * @return {Mixed} A React-renderable set of children
  */
 function mapInput (props) {
+  // Set an key for each map instance to ensure react renders them
+  let instanceKey = uid()
+
   const path = assemblePath(props)
   // Ensure value is an `ImmutableMap`
   let {value} = props
 
   // Iterate over the keys in the Map
   if (value) {
-    return value.keySeq().map(function renderObjectKeys(key, index) {
-      let nestedValue = value.get(key)
-      // Push the key into the path
-      let nestedPath = path.slice()
-      nestedPath = nestedPath.concat([key])
+    return React.createElement(
+      'div',
+      {key: instanceKey},
+      value.keySeq().map(function renderObjectKeys(key, index) {
+        let nestedValue = value.get(key)
+        // Push the key into the path
+        let nestedPath = path.slice()
+        nestedPath = nestedPath.concat([key])
 
-      if (isObject(nestedValue)) {
-        return mapInput({
-          key: `${nestedPath}-${index}`,
-          value: Map(nestedValue),
-          serializedPath: nestedPath
-        })
-      } else if(Array.isArray(nestedValue)) {
-        return list({
-          key: `${nestedPath}-${index}`,
-          value: List(nestedValue),
-          serializedPath: nestedPath
-        })
-      } else {
-        return React.createElement(input, {
-          key: `${nestedPath}-${index}`,
-          value: nestedValue,
-          serializedPath: nestedPath
-        })
-      }
-    })
+        if (isObject(nestedValue)) {
+          return mapInput({
+            key: `${nestedPath}-${index}`,
+            value: Map(nestedValue),
+            serializedPath: nestedPath
+          })
+        } else if(Array.isArray(nestedValue)) {
+          return list({
+            key: `${nestedPath}-${index}`,
+            value: List(nestedValue),
+            serializedPath: nestedPath
+          })
+        } else {
+          return React.createElement(input, {
+            key: `${nestedPath}-${index}`,
+            value: nestedValue,
+            serializedPath: nestedPath
+          })
+        }
+      })
+    )
   } else {
     return null
   }
@@ -270,7 +287,7 @@ mapInput.propTypes = {
  */
 
 function wrapComponent (component, additionalProps) {
-  return componentProps => {
+  return (componentProps) => {
     const props = Object.assign({}, componentProps, additionalProps)
     return React.createElement(
       component,
