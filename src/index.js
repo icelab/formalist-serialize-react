@@ -284,7 +284,10 @@ function mapInput (props) {
 }
 
 mapInput.propTypes = {
-  value: ImmutablePropTypes.map,
+  value: React.PropTypes.oneOfType([
+    React.PropTypes.object,
+    ImmutablePropTypes.map,
+  ]),
   serializedPath: React.PropTypes.array,
 }
 
