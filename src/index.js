@@ -236,11 +236,14 @@ function mapInput (props) {
   let instanceKey = uid()
 
   const path = assemblePath(props)
-  // Ensure value is an `ImmutableMap`
   let {value} = props
 
   // Iterate over the keys in the Map
   if (value != null) {
+
+    // Ensure value is an `ImmutableMap`
+    value = Map.isMap(value) ? value : Map(value)
+
     return React.createElement(
       'div',
       {key: instanceKey},
