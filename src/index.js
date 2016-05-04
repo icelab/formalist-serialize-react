@@ -1,6 +1,26 @@
 import React from 'react'
-import { List } from 'immutable'
+import Immutable, { List, Map } from 'immutable'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+
+/**
+ * Simple check to see if a variable is an object
+ * @param  {Mixed} obj The variable to check
+ * @return {Boolean}
+ */
+
+function isObject(obj) {
+  return obj === Object(obj)
+}
+
+/**
+ * UUID
+ */
+function uid() {
+  const four = function() {
+    return (((1+Math.random())*0x10000)|0).toString(16).substring(1)
+  }
+  return (new Date().getTime() + '-' + four()+four()+four())
+}
 
 /**
  * passThrough
@@ -43,7 +63,6 @@ function assemblePath (props = {}) {
   return path
 }
 
-// Join our path into an HTML array foo[bar][baz]
 /**
  * serializeName
  * Join our path and return a string
@@ -138,17 +157,27 @@ many.propTypes = {
 function list (props) {
   const path = assemblePath(props)
   const { value } = props
+  const listValue = value
 
   return React.createElement(
     'div',
     null,
-    (List.isList(value) && value.count() > 0) ? value.map(function renderValue (value, index) {
-      return React.createElement(input, {
-        key: `${path}-${index}`,
-        value,
-        serializedPath: path,
-        serializedIndex: ''
-      })
+    (List.isList(listValue) && listValue.count() > 0) ? listValue.map(function renderValue (value, index) {
+      if (Map.isMap(value)) {
+        return mapInput({
+          key: `${path}-${index}`,
+          value,
+          serializedPath: path,
+          serializedIndex: ''
+        })
+      } else {
+        return React.createElement(input, {
+          key: `${path}-${index}`,
+          value,
+          serializedPath: path,
+          serializedIndex: ''
+        })
+      }
     }) : React.createElement(input, {
       value: '',
       serializedPath: path
@@ -161,6 +190,7 @@ list.propTypes = {
   value: React.PropTypes.any,
   serializedPath: React.PropTypes.array
 }
+
 /**
  * Input
  *
@@ -172,7 +202,10 @@ list.propTypes = {
 
 function input (props) {
   const path = assemblePath(props)
-  const { value } = props
+  let { value } = props
+  if (value === null) {
+    value = ''
+  }
   const serializedName = serializeName(path)
   return React.createElement(
     'input',
@@ -194,6 +227,71 @@ input.propTypes = {
 }
 
 /**
+ * Turn an Immutable Map of key/values into a set of nested inputs
+ * @param  {Object} props
+ * @return {Mixed} A React-renderable set of children
+ */
+function mapInput (props) {
+  // Set an key for each map instance to ensure react renders them
+  let instanceKey = uid()
+
+  const path = assemblePath(props)
+  let {value} = props
+
+  // Iterate over the keys in the Map
+  if (value != null) {
+
+    // Ensure value is an `ImmutableMap`
+    value = Map.isMap(value) ? value : Map(value)
+
+    return React.createElement(
+      'div',
+      {key: instanceKey},
+      value.keySeq().map(function renderObjectKeys(key, index) {
+        let nestedValue = value.get(key)
+        // Push the key into the path
+        let nestedPath = path.slice()
+        nestedPath = nestedPath.concat([key])
+
+        if (isObject(nestedValue)) {
+          return mapInput({
+            key: `${nestedPath}-${index}`,
+            value: Map(nestedValue),
+            serializedPath: nestedPath
+          })
+        } else if(Array.isArray(nestedValue)) {
+          return list({
+            key: `${nestedPath}-${index}`,
+            value: List(nestedValue),
+            serializedPath: nestedPath
+          })
+        } else {
+          return React.createElement(input, {
+            key: `${nestedPath}-${index}`,
+            value: nestedValue,
+            serializedPath: nestedPath
+          })
+        }
+      })
+    )
+  } else {
+    return React.createElement(input, {
+      key: path,
+      value: value,
+      serializedPath: path
+    })
+  }
+}
+
+mapInput.propTypes = {
+  value: React.PropTypes.oneOfType([
+    React.PropTypes.object,
+    ImmutablePropTypes.map,
+  ]),
+  serializedPath: React.PropTypes.array,
+}
+
+/**
  * Wrap a passed `component` by returning a function that will call it with
  * new `additionalProps` mixed in
  * @param  {ReactComponent} component
@@ -202,7 +300,7 @@ input.propTypes = {
  */
 
 function wrapComponent (component, additionalProps) {
-  return componentProps => {
+  return (componentProps) => {
     const props = Object.assign({}, componentProps, additionalProps)
     return React.createElement(
       component,
@@ -229,12 +327,14 @@ export default function serialize (options = {}) {
       dateTimeField: wrapComponent(input, additionalProps),
       hiddenField: wrapComponent(input, additionalProps),
       multiSelectionField: wrapComponent(list, additionalProps),
+      multiUploadField: wrapComponent(list, additionalProps),
       numberField: wrapComponent(input, additionalProps),
       radioButtons: wrapComponent(input, additionalProps),
       selectBox: wrapComponent(input, additionalProps),
       selectionField: wrapComponent(input, additionalProps),
       textArea: wrapComponent(input, additionalProps),
-      textField: wrapComponent(input, additionalProps)
+      textField: wrapComponent(input, additionalProps),
+      uploadField: wrapComponent(mapInput, additionalProps),
     },
     attr: wrapComponent(attr, additionalProps),
     many: wrapComponent(many, additionalProps),
