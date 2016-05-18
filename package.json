@@ -18,13 +18,13 @@
     "url": "https://github.com/icelab/formalist-serialize-react/issues"
   },
   "scripts": {
-    "compile": "babel --presets babel-preset-es2015 src --out-dir lib",
-    "precompile": "npm run clean",
+    "build": "babel --presets babel-preset-es2015 src --out-dir lib",
+    "prebuild": "npm run clean",
     "clean": "rm -rf ./lib/*",
     "test": "babel-node --presets babel-preset-es2015 test | faucet",
     "lint": "eslint index.js test/*.js test/**/*.js",
     "posttest": "npm run lint",
-    "watch": "wr 'npm run compile' ./src"
+    "watch": "wr 'npm run build' ./src"
   },
   "devDependencies": {
     "babel-cli": "^6.8.0",
