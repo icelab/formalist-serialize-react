@@ -26,7 +26,7 @@ function serializeName (path) {
 }
 
 function render (name, value, path = []) {
-  if (value.toJS) {
+  if (value && value.toJS) {
     value = value.toJS()
   }
   if (Array.isArray(value)) {
