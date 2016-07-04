@@ -2,7 +2,7 @@ import { mount } from 'enzyme'
 import composeForm from 'formalist-compose'
 import test from 'tape'
 import React from 'react'
-import serializer from '../src'
+import serialize from '../src'
 
 import createDOM from './fixtures/dom'
 createDOM()
@@ -20,12 +20,10 @@ import dataMany from './fixtures/data-many.js'
  */
 
 function createWrapper (data, options) {
-  const serializedTemplate = composeForm(serializer(options))
-  const serializedForm = serializedTemplate(data)
   return mount(React.createElement(
     'article',
     {},
-    serializedForm.render()
+    serialize(data, options)
   ))
 }
 

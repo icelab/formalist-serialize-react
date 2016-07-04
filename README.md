@@ -5,15 +5,10 @@ A React serializer for a Formalist-compatible abstract syntax tree. It’ll take
 ## Usage
 
 ```js
-import composeForm from 'formalist-compose'
 import serialize from 'formalist-serialize-react'
-
 const data = [...] // Formalist compatible AST
-
-const serializedTemplate = composeForm(serialize())
-const serializedForm = serializedTemplate(data)
-
-// serializedForm.render()
+serialize(data)
+// <input name="foo" value="bar" type="hidden"/>
 ```
 
 You can set a prefix for the input names:
@@ -22,9 +17,8 @@ You can set a prefix for the input names:
 let options = {
   prefix: "user"
 }
-const serializedTemplate = composeForm(serialize(options))
-
-// <input name="user[foo]" type="hidden"/>
+serialize(data, options)
+// <input name="user[foo]" value="bar" type="hidden"/>
 ```
 
 ## Tests
