@@ -41,7 +41,7 @@ function renderValue (name, value, path) {
   const append = Array.isArray(name) ? name : [name]
   path = path.concat(append)
   name = serializeName(path)
-  value =  value || ''
+  value =  (value != null) ? value : ''
   const key = [name, value]
   return React.createElement(
     'input',
