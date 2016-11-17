@@ -55,6 +55,10 @@ function renderValue (name, value, path) {
 }
 
 function renderList (name, value, path) {
+  // Render an empty input for a list if it contains nothing
+  if (!value || value.length === 0) {
+    return render(name, '', path)
+  }
   return value.map((c) => {
     return render([name, ''], c, path)
   })
