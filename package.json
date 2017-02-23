@@ -1,6 +1,6 @@
 {
   "name": "formalist-serialize-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "homepage": "https://github.com/icelab/formalist-serialize-react",
   "main": "./lib/index.js",
@@ -45,7 +45,7 @@
   "dependencies": {
     "formalist-compose": "^1.0.0",
     "formalist-data-object-renderer": "^1.0.0",
-    "immutable": "3^.7.6",
+    "immutable": "^3.7.6",
     "react-addons-clone-with-props": "^0.14.8",
     "react-immutable-proptypes": "^1.7.0"
   },
