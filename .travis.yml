@@ -5,7 +5,7 @@ node_js:
 before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 install:
 - npm install
-- npm install react react-dom
+- npm install react@15.3.2 react-dom@15.3.2
 notifications:
   email: false
   slack:
