@@ -43,7 +43,7 @@
     "wr": "^1.3.1"
   },
   "dependencies": {
-    "formalist-compose": "^1.0.0",
+    "formalist-compose": "^2.0.1",
     "formalist-data-object-renderer": "^1.0.0",
     "immutable": "^3.7.6",
     "react-addons-clone-with-props": "^0.14.8",
