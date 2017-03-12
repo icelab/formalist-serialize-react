@@ -49,7 +49,7 @@ test('it should serialize a formalist AST', (nest) => {
   nest.test('... with the right number of fields', (assert) => {
     const wrapper = createWrapper(dataSimple, options)
     const inputs = wrapper.find('input')
-    assert.equal(inputs.length, 20)
+    assert.equal(inputs.length, 22)
     assert.end()
   })
 
@@ -68,8 +68,10 @@ test('it should serialize a formalist AST', (nest) => {
       'section_number_field',
       'group_text_field',
       'group_number_field',
+      'many[][__rack_workaround]',
       'many[][many_text_field]',
       'many[][many_date_field]',
+      'many[][__rack_workaround]',
       'many[][many_text_field]',
       'many[][many_date_field]',
       'attr[attr_text_field]',
@@ -96,8 +98,10 @@ test('it should serialize a formalist AST', (nest) => {
       '123',
       'Group text field value',
       '123',
+      '', // __rack_workaround
       'Many text field 1',
       '2016-03-10',
+      '', // __rack_workaround
       'Many text field 2',
       '2016-03-09',
       'Attr text field value',
@@ -130,16 +134,20 @@ test('it should serialize a formalist AST', (nest) => {
     const wrapper = createWrapper(dataMany, options)
     // Names
     const expectedNames = [
+      'many[][__rack_workaround]',
       'many[][many_text_field]',
       'many[][many_date_field]',
+      'many[][__rack_workaround]',
       'many[][many_text_field]',
       'many[][many_date_field]'
     ]
     assertInputNames(assert, wrapper, expectedNames)
     // Values
     const expectedValues = [
+      '', // __rack_workaround
       'Many text field 1',
       '2016-03-10',
+      '', // __rack_workaround
       'Many text field 2',
       '2016-03-09'
     ]
@@ -168,8 +176,10 @@ test('it should handle namespacing prefixes', (nest) => {
       'user[section_number_field]',
       'user[group_text_field]',
       'user[group_number_field]',
+      'user[many][][__rack_workaround]',
       'user[many][][many_text_field]',
       'user[many][][many_date_field]',
+      'user[many][][__rack_workaround]',
       'user[many][][many_text_field]',
       'user[many][][many_date_field]',
       'user[attr][attr_text_field]',
@@ -194,8 +204,10 @@ test('it should handle namespacing prefixes', (nest) => {
   nest.test('... for fields nested in `many` blocks', (assert) => {
     const wrapper = createWrapper(dataMany, options)
     const expectedNames = [
+      'user[many][][__rack_workaround]',
       'user[many][][many_text_field]',
       'user[many][][many_date_field]',
+      'user[many][][__rack_workaround]',
       'user[many][][many_text_field]',
       'user[many][][many_date_field]'
     ]
