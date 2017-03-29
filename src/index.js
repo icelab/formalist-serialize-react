@@ -55,6 +55,10 @@ function renderValue (name, value, path) {
 }
 
 function renderList (name, value, path) {
+  // Render an empty input for a list if it contains nothing
+  if (!value || value.length === 0) {
+    return render(name, '', path)
+  }
   return value.map((c) => {
     // Insert a junk value as the _first_ item in an array where the contents of
     // the array are a map to ensure params are parsed correctly by rack
