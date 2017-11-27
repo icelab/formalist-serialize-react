@@ -55,19 +55,23 @@ function renderValue (name, value, path) {
 }
 
 function renderList (name, value, path) {
-  return value.map((c) => {
-    // Insert a junk value as the _first_ item in an array where the contents of
-    // the array are a map to ensure params are parsed correctly by rack
-    // https://github.com/rack/rack/issues/951
-    if (isObject(c) || Map.isMap(c)) {
-      return [
-        render([name, '', '__rack_workaround'], '', path),
-        render([name, ''], c, path)
-      ]
-    } else {
-      return render([name, ''], c, path);
-    }
-  })
+  if (value.length > 0) {
+    return value.map((c) => {
+      // Insert a junk value as the _first_ item in an array where the contents of
+      // the array are a map to ensure params are parsed correctly by rack
+      // https://github.com/rack/rack/issues/951
+      if (isObject(c) || Map.isMap(c)) {
+        return [
+          render([name, '', '__rack_workaround'], '', path),
+          render([name, ''], c, path)
+        ]
+      } else {
+        return render([name, ''], c, path);
+      }
+    })
+  } else {
+    return render(name, '', path);
+  }
 }
 
 function renderMap (name, value, path) {
