@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+# v1.0.5 2018-10-16
+
+* Allow `formalist-compose` dependency to bump to 3.x range.
+
 # v1.0.4 2017-11-27
 
 * Fix issue where empty lists/arrays weren’t rendered.
