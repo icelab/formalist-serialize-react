@@ -38,13 +38,13 @@
     "eslint-plugin-standard": "^1.3.2",
     "faucet": "0.0.1",
     "jsdom": "8.1.0",
-    "nodemon": "^1.11.0",
+    "nodemon": "^1.18.6",
     "react-addons-test-utils": "15.4.2",
     "tape": "4.5.1"
   },
   "dependencies": {
-    "formalist-compose": "^2.0.1 || ^3.0.1",
-    "formalist-data-object-renderer": "^1.0.0",
+    "formalist-compose": "^2.0.1 || ^3.0.2",
+    "formalist-data-object-renderer": "^1.0.3",
     "immutable": "^3.7.6"
   },
   "peerDependencies": {
